@@ -1,0 +1,4 @@
+django==1.9
+pip-tools==1.8.2
+psutil==5.2.1
+vmprof==0.4.9
