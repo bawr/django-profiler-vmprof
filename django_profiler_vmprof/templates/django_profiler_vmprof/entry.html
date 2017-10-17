@@ -1,0 +1,37 @@
+<html lang="en" ng-app="vmprof">
+    <head>
+        <meta charset="utf-8"/>
+        <title>vmprof</title>
+
+        <link href="/static/vmprof/libs/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="/static/vmprof/libs/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
+        <link href="/static/vmprof/libs/font-awesome-4.3.0/css/font-awesome.css" rel="stylesheet" >
+        <link href="/static/vmprof/main.css" rel="stylesheet" />
+
+        <!-- vendor deps -->
+        <script src="/static/vmprof/libs/d3.min.js" charset="utf-8"></script>
+        <script src="/static/vmprof/libs/jquery-2.1.1.min.js"></script>
+        <script src="/static/vmprof/libs/lodash.min.js"></script>
+        <script src="/static/vmprof/libs/moment.js"></script>
+        <script src="/static/vmprof/libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/vmprof/libs/angular.min.js"></script>
+        <script src="/static/vmprof/libs/angular-resource.min.js"></script>
+        <script src="/static/vmprof/libs/angular-cookies.min.js"></script>
+        <script src="/static/vmprof/libs/angular-route.min.js"></script>
+        <script src="/static/vmprof/libs/angular-sanitize.min.js"></script>
+        <script src="/static/vmprof/libs/raphael-min.js"></script>
+        <script src="/static/vmprof/libs/numeral.min.js"></script>
+        <script src="/static/vmprof/libs/jsrender.min.js"></script>
+        <script src="/static/vmprof/libs/plotly-latest.min.js"></script>
+
+        <script src="/static/vmprof/stats.js"></script>
+        <script src="/static/vmprof/visualizations.js"></script>
+        <script src="/static/vmprof/main.js"></script>
+    </head>
+
+    <body ng-controller="main">
+        <div class="container">
+          <div ng-view></div>
+        </div>
+    </body>
+</html>

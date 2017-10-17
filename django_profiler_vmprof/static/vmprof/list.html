@@ -1,0 +1,58 @@
+<div id="list">
+<!--
+  <div class="row display-control" ng-show="user">
+    <div class="col-md-2 col-md-offset-10">
+      <select class="form-control input-sm" ng-model="fetchAll" ng-change="getLogs(true)" ng-disabled="loading">
+        <option selected value="">Display: Mine</option>
+        <option value="True">Display: All</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <img id="loading_img" ng-show="loading" class="center-block loading" src="/static/images/loader.gif" />
+  </div>
+
+  <div ng-show="!loading" class="list-group" ng-init="ago=true">
+    <div ng-repeat="log in logs" class="profile-entry" ng-style="background(log.created)">
+        <div class="list-argv list-title">
+          <div class="pull-right popup-images">
+              <img ng-if="!log.user"
+                   ng-src="{{ log.user.gravatar || '/static/images/logo_150.png' }}">
+              <img ng-src="{{ '/static/images/'+log.vm.toLowerCase()+'.png' }}">
+          </div>
+          $ <a href="#/{{ log.runtime_id }}">{{log.name}}</a><br/>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+              <a class="list-profile-link" href="#/{{ log.runtime_id }}">
+                &rarr; CPU Profile
+              </a><br>
+              <a class="list-profile-link" href="#/{{ log.runtime_id }}/memory">
+                &rarr; Memory Stats
+              </a><br>
+              <a ng-if="log.jitlog_id" class="list-profile-link" href="#/{{ log.runtime_id }}/traces">
+                &rarr; JIT Compiler Log
+              </a>
+          </div>
+          <div class="col-md-3" >
+              <dl class="list-properties">
+                  <dt>took</dt> <dd>{{ log.time_in_seconds }} sec</dd> <br>
+                  <dt>os</dt> <dd>{{ log.os }}</dd> <br>
+                  <dt>time</dt> <dd>
+                    <span ng-show="ago" ng-click="ago=false">{{ log.created | ago }}</span>
+                    <span ng-hide="ago" ng-click="ago=true">{{ log.created }}</span>
+                  </dd>
+              </dl>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <button ng-if="next" type="button"
+          class="btn btn-success btn-block"
+          ng-click="more(next)">
+    More
+  </button>
+-->
+</div>

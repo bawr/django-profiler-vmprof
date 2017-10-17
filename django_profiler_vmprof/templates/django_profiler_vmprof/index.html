@@ -1,0 +1,41 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>vmprof index</title>
+    </head>
+    <body>
+        <table style="font-family: monospace; text-align: right; border-spacing: 1em;">
+            {% for entry in list %}
+            <tr>
+                <td>
+                    {{entry.id}}
+                </td>
+                <td>
+                    {{entry.started_at|date:"Y-m-d H:i:s.u O"}}
+                </td>
+                <td>
+                    {{entry.request_user_id}}
+                </td>
+                <td>
+                    {{entry.response_code}}
+                </td>
+                <td>
+                    {{entry.time_real|floatformat:1}}
+                </td>
+                <td>
+                    {{entry.time_user|floatformat:1}}
+                </td>
+                <td>
+                    {{entry.time_sys|floatformat:1}}
+                </td>
+                <td>
+                    {{entry.allocated_vm}}
+                </td>
+                <td style="text-align: left;">
+                    {% if entry.has_data %}<a href="./view/#/{{entry.id}}">{{entry.request_path}}</a>{% else %}{{entry.request_path}}{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
