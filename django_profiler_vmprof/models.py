@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import BigIntegerField
 from django.db.models import BinaryField
 from django.db.models import DateTimeField
 from django.db.models import FloatField
@@ -16,5 +17,5 @@ class RequestProfile(Model):
     time_real = FloatField()
     time_user = FloatField()
     time_sys = FloatField()
-    allocated_vm = IntegerField()
+    allocated_vm = BigIntegerField()
     data = BinaryField(null=True)
