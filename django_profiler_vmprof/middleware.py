@@ -94,7 +94,8 @@ class RequestProfilerMiddleware:
             request._profiler = None
 
     def process_response(self, request: django.http.HttpRequest, response: django.http.HttpResponse):
-        profiler: typing.Optional[RequestProfiler] = request._profiler
+        # we're not guaranteed to have ran .process_request() if there was an exception:
+        profiler: typing.Optional[RequestProfiler] = getattr(request, '_profiler', None)
         if profiler:
             profiler.disable(response)
             self.profile_response(request, response, profiler.profile)
