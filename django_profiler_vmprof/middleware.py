@@ -20,6 +20,7 @@ else:
 import django.conf
 import django.http
 import django.utils.timezone
+import django.utils.deprecation
 
 from .models import RequestProfile
 
@@ -74,7 +75,7 @@ class RequestProfiler:
         self.profile_file.close()
 
 
-class RequestProfilerMiddleware:
+class RequestProfilerMiddleware(django.utils.deprecation.MiddlewareMixin):
     def profile_request(self, request: django.http.HttpRequest):
         return request.user.is_authenticated()
 

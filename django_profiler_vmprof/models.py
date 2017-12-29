@@ -7,11 +7,12 @@ from django.db.models import ForeignKey
 from django.db.models import IntegerField
 from django.db.models import TextField
 from django.db.models import Model
+from django.db.models import SET_NULL
 
 class RequestProfile(Model):
     started_at = DateTimeField()
     created_at = DateTimeField()
-    request_user = ForeignKey(User, null=True)
+    request_user = ForeignKey(User, on_delete=SET_NULL, null=True)
     request_path = TextField(blank=True)
     response_code = IntegerField()
     time_real = FloatField()
