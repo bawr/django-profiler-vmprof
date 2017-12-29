@@ -2,6 +2,7 @@ import gzip
 import sys
 import tempfile
 import time
+import inspect
 import typing
 
 import psutil
@@ -20,7 +21,6 @@ else:
 import django.conf
 import django.http
 import django.utils.timezone
-import django.utils.deprecation
 
 from .models import RequestProfile
 
@@ -44,6 +44,7 @@ class RequestProfiler:
         self.profile.started_at = django.utils.timezone.now()
         self.profile.request_user_id = request.user.id
         self.profile.request_path = request.path
+        self.profile.depth = len(inspect.stack(context=0)) - 2
 
         self.cpu_real = time.monotonic()
         self.cpu_time = self.process.cpu_times()
@@ -55,7 +56,7 @@ class RequestProfiler:
 
         vmprof.enable(self.profile_file.fileno(), lines=False, memory=False, native=False, real_time=True)
 
-    def disable(self, response: django.http.HttpResponse):
+    def disable(self, response_status_code=-1):
         time_now = time.monotonic()
         self.cpu_real = time_now - self.cpu_real
         self.cpu_diff = self.cpu_time._make(q - p for (p, q) in zip(self.cpu_time, self.process.cpu_times()))
@@ -64,7 +65,7 @@ class RequestProfiler:
         vmprof.disable()
 
         self.profile.created_at = django.utils.timezone.now()
-        self.profile.response_code = response.status_code
+        self.profile.response_code = response_status_code
         self.profile.time_real = self.cpu_real
         self.profile.time_user = self.cpu_time.user
         self.profile.time_sys = self.cpu_time.system
@@ -75,7 +76,10 @@ class RequestProfiler:
         self.profile_file.close()
 
 
-class RequestProfilerMiddleware(django.utils.deprecation.MiddlewareMixin):
+class RequestProfilerMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
     def profile_request(self, request: django.http.HttpRequest):
         return request.user.is_authenticated()
 
@@ -83,21 +87,25 @@ class RequestProfilerMiddleware(django.utils.deprecation.MiddlewareMixin):
         profile.data = gzip.compress(profile.data)
         profile.save()
 
-    def process_request(self, request: django.http.HttpRequest):
+    def __call__(self, request: django.http.HttpRequest):
+        profiler: RequestProfiler = None
+
         if self.profile_request(request):
             try:
-                request._profiler = RequestProfiler()
-                request._profiler.enable(request)
+                profiler = RequestProfiler()
+                profiler.enable(request)
             except:
-                request._profiler = None
-                raise
-        else:
-            request._profiler = None
+                profiler = None
 
-    def process_response(self, request: django.http.HttpRequest, response: django.http.HttpResponse):
-        # we're not guaranteed to have ran .process_request() if there was an exception:
-        profiler: typing.Optional[RequestProfiler] = getattr(request, '_profiler', None)
+        try:
+            response = self.get_response(request)
+        except:
+            if (profiler is not None):
+                profiler.disable()
+            raise
+
         if profiler:
-            profiler.disable(response)
+            profiler.disable(response.status_code)
             self.profile_response(request, response, profiler.profile)
+
         return response

@@ -4,7 +4,7 @@ from vmprof.profiler import read_profile
 
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.db.models import F, Func, When, Value, Case, BooleanField
+from django.db.models import When, Value, Case, BooleanField
 from django.http import Http404
 from django.http import JsonResponse
 from django.views.generic import TemplateView
@@ -30,9 +30,12 @@ class ProfilerEntryJSON(SuperuserRequiredMixin, DetailView):
             raise Http404()
         profile = read_profile(io.BytesIO(data))
         profile_tree = profile.get_tree()
+        profile_dump = profile_tree._serialize()
+        for i in range(self.object.depth):
+            profile_dump = profile_dump[4][0]
         profile_data = {
             "VM": profile.interp,
-            "profiles": profile_tree._serialize(),
+            "profiles": profile_dump,
             "argv": "%s %s" % (profile.interp, profile.getargv()),
             "version": 2,
         }
@@ -45,6 +48,7 @@ class ProfilerEntryView(SuperuserRequiredMixin, TemplateView):
 
 class ProfilerIndexView(SuperuserRequiredMixin, ListView):
     model = RequestProfile
+    model_fields = [f.name for f in model._meta.get_fields() if f.name not in ('data', 'depth')]
     template_name = 'django_profiler_vmprof/index.html'
 
     def get_context_data(self, **kwargs):
@@ -52,8 +56,7 @@ class ProfilerIndexView(SuperuserRequiredMixin, ListView):
         context['list'] = list(
             self.object_list
                 .order_by('-started_at')
-                .defer('data')
                 .annotate(has_data=Case(When(data=None, then=Value(False)), default=True, output_field=BooleanField()))
-                .values()
+                .values('has_data', *self.model_fields)
         )
         return context
