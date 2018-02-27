@@ -20,4 +20,3 @@ class RequestProfile(Model):
     time_sys = FloatField()
     allocated_vm = BigIntegerField()
     data = BinaryField(null=True)
-    depth = IntegerField(default=0)

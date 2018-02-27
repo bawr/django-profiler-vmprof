@@ -10,9 +10,9 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-profiler-vmprof',
-    version='0.2.1',
+    version='0.2.2',
     install_requires=[
-        'django>=1.9',
+        'django>=2.0',
         'psutil>=5.2.1',
         'vmprof>=0.4.9',
     ],
@@ -28,7 +28,7 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.9',
+        'Framework :: Django :: 2.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX',

@@ -31,8 +31,18 @@ class ProfilerEntryJSON(SuperuserRequiredMixin, DetailView):
         profile = read_profile(io.BytesIO(data))
         profile_tree = profile.get_tree()
         profile_dump = profile_tree._serialize()
-        for i in range(self.object.depth):
-            profile_dump = profile_dump[4][0]
+        profile_type = self.kwargs['type']
+
+        if (profile_type == 'top'):
+            cutoff_samples = int(0.8 * profile_dump[2])
+            while profile_dump:
+                for profile_next in profile_dump[4]:
+                    if (profile_next[2] > cutoff_samples):
+                        profile_dump = profile_next
+                        break
+                else:
+                    break
+
         profile_data = {
             "VM": profile.interp,
             "profiles": profile_dump,
@@ -48,7 +58,7 @@ class ProfilerEntryView(SuperuserRequiredMixin, TemplateView):
 
 class ProfilerIndexView(SuperuserRequiredMixin, ListView):
     model = RequestProfile
-    model_fields = [f.name for f in model._meta.get_fields() if f.name not in ('data', 'depth')]
+    model_fields = [f.name for f in model._meta.get_fields() if f.name not in ('data',)]
     template_name = 'django_profiler_vmprof/index.html'
 
     def get_context_data(self, **kwargs):

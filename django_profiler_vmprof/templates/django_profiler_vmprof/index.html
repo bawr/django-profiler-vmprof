@@ -32,7 +32,7 @@
                     {{entry.allocated_vm}}
                 </td>
                 <td style="text-align: left;">
-                    {% if entry.has_data %}<a href="./view/#/{{entry.id}}">{{entry.request_path}}</a>{% else %}{{entry.request_path}}{% endif %}
+                    {% if entry.has_data %}<a href="./view/#/{{entry.id}}.all">{{entry.request_path}}</a>{% else %}{{entry.request_path}}{% endif %}
                 </td>
             </tr>
             {% endfor %}

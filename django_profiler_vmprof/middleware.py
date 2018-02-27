@@ -44,7 +44,6 @@ class RequestProfiler:
         self.profile.started_at = django.utils.timezone.now()
         self.profile.request_user_id = request.user.id
         self.profile.request_path = request.path
-        self.profile.depth = len(inspect.stack(context=0)) - 2
 
         self.cpu_real = time.monotonic()
         self.cpu_time = self.process.cpu_times()
