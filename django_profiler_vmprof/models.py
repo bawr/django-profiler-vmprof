@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import BigIntegerField
 from django.db.models import BinaryField
+from django.db.models import BooleanField
 from django.db.models import DateTimeField
 from django.db.models import FloatField
 from django.db.models import ForeignKey
@@ -20,3 +21,8 @@ class RequestProfile(Model):
     time_sys = FloatField()
     allocated_vm = BigIntegerField()
     data = BinaryField(null=True)
+    data_json = BooleanField()
+    data_path = TextField(blank=True)
+    size_base = BigIntegerField(null=True)
+    size_gzip = BigIntegerField(null=True)
+    size_json = BigIntegerField(null=True)

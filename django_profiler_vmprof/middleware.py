@@ -2,7 +2,6 @@ import gzip
 import sys
 import tempfile
 import time
-import inspect
 import typing
 
 import psutil
@@ -74,6 +73,14 @@ class RequestProfiler:
         self.profile.data = self.profile_file.read()
         self.profile_file.close()
 
+        self.profile.data_json = False
+        self.profile.data_path = ''
+
+        self.profile.size_base = len(self.profile.data)
+        self.profile.data = gzip.compress(self.profile.data, compresslevel=8)
+        self.profile.size_gzip = len(self.profile.data)
+        self.profile.size_json = None
+
 
 class RequestProfilerMiddleware:
     def __init__(self, get_response):
@@ -83,7 +90,6 @@ class RequestProfilerMiddleware:
         return request.user.is_authenticated()
 
     def profile_response(self, request: django.http.HttpRequest, response: django.http.HttpResponse, profile: RequestProfile):
-        profile.data = gzip.compress(profile.data)
         profile.save()
 
     def __call__(self, request: django.http.HttpRequest):
