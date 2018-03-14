@@ -7,6 +7,8 @@ from gzip import decompress
 def update_sizes(apps, schema_editor):
     RequestProfile = apps.get_model('django_profiler_vmprof', 'RequestProfile')
     for profile in RequestProfile.objects.iterator():
+        if (profile.data is None):
+            continue
         profile.size_base = len(decompress(profile.data))
         profile.size_gzip = len(profile.data)
         profile.save(force_update=True, update_fields=['size_base', 'size_gzip'])

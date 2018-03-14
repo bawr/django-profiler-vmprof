@@ -10,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-profiler-vmprof',
-    version='0.2.3',
+    version='0.2.4',
     install_requires=[
         'django>=2.0',
         'psutil>=5.2.1',
