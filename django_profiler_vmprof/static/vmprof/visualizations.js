@@ -95,6 +95,7 @@ var Visualization = {};
             {text: "JIT: ",         cls: "label-success", value: node.green()},
             {text: "GC: ",          cls: "label-info",    value: node.gc()},
         ];
+
         for (var i in phases) {
             var phase = phases[i];
             var li = $('<li>').
@@ -104,14 +105,23 @@ var Visualization = {};
             ul.append(li);
             ul.append("\n");
         }
+
+        ul.append($('<li>').
+            addClass("label").
+            addClass("label-default").
+            text("Wall: " + (node.total / 1010).toFixed(2) + "s"));
+        ul.append("\n");
+
         var tooltip = ul[0].outerHTML;
         var name = split_name(node.name);
         var title = "<b>function:</b> " + _.escape(name.funcname);
+
         if (name.file != '-' && name.line != 0) {
           title = title + " <b>file:</b> " + _.escape(name.file) + ":" + name.line;
         } else {
           title = title + " <b>file:</b> -";
         }
+
         $(rect.node).add(text.node).popover({
             title: title,
             content: tooltip,
