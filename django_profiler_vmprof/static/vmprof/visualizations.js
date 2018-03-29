@@ -109,7 +109,7 @@ var Visualization = {};
         ul.append($('<li>').
             addClass("label").
             addClass("label-default").
-            text("Wall: " + (node.total / 999).toFixed(2) + "s"));
+            text("Wall: " + (node.total / 99).toFixed(2) + "s"));
         ul.append("\n");
 
         var tooltip = ul[0].outerHTML;

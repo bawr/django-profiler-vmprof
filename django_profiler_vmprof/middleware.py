@@ -48,11 +48,12 @@ class RequestProfiler:
         self.cpu_time = self.process.cpu_times()
         self.mem_info = self.process.memory_full_info()
 
+        # profile at ~100 Hz, asking for more is asking for trouble
         # the web view has no support for lines and memory views
         # native currently fails when trying to unload a library on next request
         # real_time is necessary for our use case - otherwise we'll only profile CPU time, which we don't care about
 
-        vmprof.enable(self.profile_file.fileno(), lines=False, memory=False, native=False, real_time=True)
+        vmprof.enable(self.profile_file.fileno(), period=0.0099, lines=False, memory=False, native=False, real_time=True)
 
     def disable(self, response_status_code=-1):
         time_now = time.monotonic()
