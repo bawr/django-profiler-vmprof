@@ -20,6 +20,7 @@ class RequestProfile(Model):
     time_user = FloatField()
     time_sys = FloatField()
     allocated_vm = BigIntegerField()
+    peak_rss_use = BigIntegerField()
     data = BinaryField(null=True)
     data_json = BooleanField()
     data_path = TextField(blank=True)

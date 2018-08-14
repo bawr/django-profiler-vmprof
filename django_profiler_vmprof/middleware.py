@@ -69,6 +69,7 @@ class RequestProfiler:
         self.profile.time_user = self.cpu_time.user
         self.profile.time_sys = self.cpu_time.system
         self.profile.allocated_vm = self.mem_diff.vms
+        self.profile.peak_rss_use = self.get_proc_memory_usage("VmHWM")
 
         self.profile_file.seek(0)
         self.profile.data = self.profile_file.read()
@@ -81,6 +82,17 @@ class RequestProfiler:
         self.profile.data = gzip.compress(self.profile.data, compresslevel=8)
         self.profile.size_gzip = len(self.profile.data)
         self.profile.size_json = None
+
+    def get_proc_memory_usage(self, mem_type: str = "VmRSS") -> int:
+        if platform.system() != "Linux":
+            return -1
+        try:
+            status_file = open('/proc/%i/status' % (self.process.pid,))
+            status_dict = {line.split()[0]: line.split()[1] for line in status_file if len(line.split()) > 1}
+            status_file.close()
+            return int(status_dict['%s:' % mem_type]) * 1024  # kB -> B
+        except:
+            return 0
 
 
 class RequestProfilerMiddleware:

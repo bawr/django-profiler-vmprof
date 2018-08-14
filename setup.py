@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 from setuptools import find_packages, setup
@@ -10,7 +11,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-profiler-vmprof',
-    version='0.2.7',
+    version='0.2.8',
     install_requires=[
         'django>=2.0',
         'psutil>=5.2.1',
@@ -35,5 +36,6 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 )
