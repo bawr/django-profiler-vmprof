@@ -1,4 +1,5 @@
 import gzip
+import platform
 import sys
 import tempfile
 import time
