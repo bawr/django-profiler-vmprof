@@ -36,7 +36,7 @@ class ProfilerEntryJSON(SuperuserRequiredMixin, DetailView):
         else:
             response = HttpResponse(content=profile_data, content_type='application/json; charset=utf-8')
             response['Content-Encoding'] = 'gzip'
-            response['Content-Lendth'] = str(len(profile_data))
+            response['Content-Length'] = str(len(profile_data))
 
         return response
 
@@ -77,7 +77,7 @@ class ProfilerIndexView(SuperuserRequiredMixin, ListView):
 
 def parse_profile(profile: RequestProfile):
     if (profile.data and profile.data_json):
-        return profile.data
+        return bytes(profile.data)
 
     profile_dict = read_profile(io.BytesIO(profile.data))
     profile_tree = profile_dict.get_tree()

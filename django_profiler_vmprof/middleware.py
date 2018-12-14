@@ -67,8 +67,8 @@ class RequestProfiler:
         self.profile.created_at = django.utils.timezone.now()
         self.profile.response_code = response_status_code
         self.profile.time_real = self.cpu_real
-        self.profile.time_user = self.cpu_time.user
-        self.profile.time_sys = self.cpu_time.system
+        self.profile.time_user = self.cpu_diff.user
+        self.profile.time_sys = self.cpu_diff.system
         self.profile.allocated_vm = self.mem_diff.vms
         self.profile.peak_rss_use = self.get_proc_memory_usage("VmHWM")
 
@@ -101,7 +101,7 @@ class RequestProfilerMiddleware:
         self.get_response = get_response
 
     def profile_request(self, request: django.http.HttpRequest):
-        return request.user.is_authenticated()
+        return request.user.is_authenticated
 
     def profile_response(self, request: django.http.HttpRequest, response: django.http.HttpResponse, profile: RequestProfile):
         profile.save()
