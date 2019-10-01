@@ -1,4 +1,4 @@
-django==2.1
+django==2.1.11
 pip-tools==1.8.2
 psutil==5.2.1
 vmprof==0.4.11.dev2
